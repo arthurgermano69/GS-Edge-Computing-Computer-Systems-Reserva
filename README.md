@@ -2,12 +2,25 @@
 
 Controlador inteligente para caixa d'água residencial, baseado em **ESP32-S3** e **FreeRTOS**. Ele mede o nível, liga e desliga a bomba automaticamente, detecta falhas (boia, entrada de água, ausência de fluxo) e envia telemetria por **MQTT com TLS**.
 
-> **Equipe:** [nomes dos integrantes] · **Instituição / disciplina:** [preencher]
-> **ODS atendidos:** [ODS 6 – Água potável e saneamento] · [ODS 12 – Consumo e produção responsáveis]
+**Instituição:** FIAP - Faculdade de Informática e Administração Paulista
+
+**Disciplina:** Edge Computing Computer Systems
+
+**ODS atendidos:** ODS 6 (Água potável e saneamento) e ODS 12 (Consumo e produção responsáveis)
+
+## Integrantes
+
+| Nome | RM |
+|---|---|
+| Arthur Germano Pinheiro | RM574042 |
+| Arthur Nepomuceno Dias Gomes | RM572626 |
+| Artur de Novazzi Maia | RM572624 |
+| Bruno Araujo Castro | RM572723 |
+| João Pedro De Souza | RM571437 |
 
 ## Problema e solução
 
-**Beneficiado:** [famílias que dependem de caixa d'água, principalmente onde o abastecimento é irregular].
+**Beneficiado:** famílias que dependem de caixa d'água, principalmente onde o abastecimento é irregular.
 **Problema:** sem monitoramento, a caixa pode esvaziar sem ninguém perceber ou transbordar quando a boia falha, desperdiçando água tratada.
 **Solução:** o sistema mede o nível, comanda a bomba, avisa no local (LEDs, buzzer e tela) e envia o estado pela internet.
 
@@ -97,7 +110,7 @@ Em `ca_cert.h`, declare o certificado do broker em uma variável chamada `CA_CER
 | `SENSOR_MOUNT_HEIGHT_CM` | 22,0 | Distância do sensor ao fundo; altura da água = este valor − distância medida |
 | `LEVEL_MIN_CM` | 1,0 | Altura em que o relé liga |
 | `LEVEL_MAX_CM` | 15,0 | Altura que dispara o alerta se a boia não ativou |
-| `TANK_LITERS_PER_CM` | 10,0 | Litros por cm de altura (**ajustar** à caixa real) |
+| `TANK_LITERS_PER_CM` | 0,2 | Litros por cm de altura. Protótipo com caixa de 3 L (≈ 15 cm de água); ajustar à caixa real |
 | `NOINFLOW_GRACE_MS` | 60000 | Tolerância do relé ligado sem vazão de entrada |
 | `NOINFLOW_LEVEL_WINDOW_MS` | 180000 | Janela de confirmação pelo nível |
 | `NOINFLOW_LEVEL_RISE_CM` | 0,5 | Subida mínima do nível na janela |
@@ -152,7 +165,7 @@ O tópico base é o valor de `MQTT_TOPICO`.
 **Telemetria:**
 
 ```json
-{"deviceId":"reserva-001","timestamp":"2026-11-19T03:00:00Z","volumeUtilL":180.0,"autonomiaH":3.6,"estado":"normal","vazaoEntradaLh":0.0,"vazaoSaidaLh":0.0}
+{"deviceId":"reserva-001","timestamp":"2026-11-19T03:00:00Z","volumeUtilL":2.4,"autonomiaH":0.4,"estado":"normal","vazaoEntradaLh":0.0,"vazaoSaidaLh":6.0}
 ```
 
 Os números têm 1 casa decimal e valem `null` quando inválidos. `autonomiaH` é o volume útil dividido pela vazão média de saída.
@@ -173,7 +186,7 @@ O projeto roda no [Wokwi](https://wokwi.com) com estas substituições:
 
 **Como usar:** crie um projeto ESP32-S3, cole os arquivos de `wokwi/`, adicione as bibliotecas pelo Library Manager e crie as abas `secrets.h` e `ca_cert.h`. Arraste o controle `distance` do HC-SR04 para mudar o nível (22 cm = vazio, 7 cm = 15 cm de água).
 
-Link do projeto: [colar o link do Wokwi aqui]
+Link do projeto: https://wokwi.com/projects/481139466386492417
 
 ## Solução de problemas
 
@@ -188,4 +201,4 @@ Link do projeto: [colar o link do Wokwi aqui]
 
 ## Licença
 
-[Definir a licença do projeto]
+Projeto acadêmico, uso educacional.
